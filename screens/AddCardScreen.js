@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     Text,
     View,
@@ -7,38 +7,37 @@ import {
     TouchableOpacity,
     Alert,
     AsyncStorage
-} from 'react-native';
-import { DECKS_STORAGE_KEY } from '../utils/Constants'
+} from "react-native";
+import { DECKS_STORAGE_KEY } from "../utils/Constants";
 
 
 export default class AddCardScreen extends React.Component {
+    static navigationOptions = {
+        title: "Add Card"
+    }
     constructor(props) {
         super(props);
         this.state = {
             question: "",
             answer: "",
             deckId: props.navigation.state.params.deckId
-        }
-    }
-    static navigationOptions = {
-        title: "Add Card"
+        };
     }
     handleOnPress = () => {
         const { question, answer, deckId } = this.state;
         if (question.length && answer.length) {
-            AsyncStorage.getItem(DECKS_STORAGE_KEY).then(data => {
+            AsyncStorage.getItem(DECKS_STORAGE_KEY).then((data) => {
                 const decks = JSON.parse(data);
                 decks[deckId].questions.push({
                     answer,
                     question
                 });
-                console.log(decks);
                 AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
-                Alert.alert("new card added sucessfully")
-                this.setState({ question: "", answer: "" })
+                Alert.alert("new card added sucessfully");
+                this.setState({ question: "", answer: "" });
             });
         } else {
-            Alert.alert("please enter missing fields")
+            Alert.alert("please enter missing fields");
         }
     }
     render() {
@@ -49,13 +48,13 @@ export default class AddCardScreen extends React.Component {
                         placeholder="enter question"
                         value={this.state.question}
                         style={styles.input}
-                        onChangeText={(question) => this.setState({ question })}
+                        onChangeText={question => this.setState({ question })}
                     />
                     <TextInput
                         placeholder="enter answer"
                         value={this.state.answer}
                         style={styles.input}
-                        onChangeText={(answer) => this.setState({ answer })}
+                        onChangeText={answer => this.setState({ answer })}
                     />
                     <TouchableOpacity
                         style={styles.button}
@@ -71,13 +70,13 @@ export default class AddCardScreen extends React.Component {
 
 const styles = {
     button: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
         padding: 10
     },
     input: {
         borderWidth: 1,
-        borderColor: '#555',
+        borderColor: "#555",
         marginVertical: 10,
         height: 40
     }

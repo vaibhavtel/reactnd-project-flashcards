@@ -1,25 +1,35 @@
-import React from 'react';
+import React from "react";
 import {
     Text,
     View,
     ScrollView,
     TouchableOpacity,
     AsyncStorage
-} from 'react-native';
-import { DECKS_STORAGE_KEY } from '../utils/Constants'
+} from "react-native";
+import { DECKS_STORAGE_KEY } from "../utils/Constants";
 
 
 export default class DeckViewScreen extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        title: navigation.state.params.deck.title
+    })
     constructor(props) {
         super(props);
         this.state = {
             deckId: props.navigation.state.params.deck.title,
             deck: props.navigation.state.params.deck
-        }
+        };
     }
-    static navigationOptions = ({ navigation }) => ({
-        title: navigation.state.params.deck.title
-    })
+    componentDidMount() {
+        this.props.navigation.addListener("didFocus", () => {
+            AsyncStorage.getItem(DECKS_STORAGE_KEY).then((data) => {
+                const decks = JSON.parse(data);
+                this.setState({
+                    deck: decks[this.state.deckId]
+                });
+            });
+        });
+    }
     handleAddCard = () => {
         this.props.navigation.navigate("AddCardScreen", {
             deckId: this.state.deckId
@@ -30,16 +40,6 @@ export default class DeckViewScreen extends React.Component {
             questions: this.state.deck.questions
         });
     }
-    componentDidMount() {
-        this.props.navigation.addListener('didFocus', () => {
-            AsyncStorage.getItem(DECKS_STORAGE_KEY).then(data => {
-                const decks = JSON.parse(data);
-                this.setState({
-                    deck: decks[this.state.deckId]
-                });
-            });
-        });
-    }
     render() {
         return (
             <View>
@@ -48,18 +48,18 @@ export default class DeckViewScreen extends React.Component {
                         <Text>{this.state.deck.title}</Text>
                         <Text>{this.state.deck.questions.length} cards</Text>
                     </View>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.button}
                         onPress={this.handleAddCard}
                     >
                         <Text> Add card </Text>
-                    </TouchableOpacity>    
-                    <TouchableOpacity 
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         style={styles.button}
                         onPress={this.handleStartQuiz}
                     >
                         <Text> Start Quiz </Text>
-                    </TouchableOpacity>    
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
         );
@@ -68,8 +68,8 @@ export default class DeckViewScreen extends React.Component {
 
 const styles = {
     button: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
         padding: 10,
         marginVertical: 10
     }

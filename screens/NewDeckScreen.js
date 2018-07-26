@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     Text,
     View,
@@ -7,19 +7,19 @@ import {
     TouchableOpacity,
     AsyncStorage,
     Alert
-} from 'react-native';
+} from "react-native";
 
-import { DECKS_STORAGE_KEY } from '../utils/Constants'
+import { DECKS_STORAGE_KEY } from "../utils/Constants";
 
 export default class NewDeckScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             deckName: ""
-        }
+        };
     }
     handleOnPress = () => {
-        const {deckName} = this.state;
+        const { deckName } = this.state;
         if (deckName.length) {
             AsyncStorage.mergeItem(
                 DECKS_STORAGE_KEY,
@@ -29,19 +29,19 @@ export default class NewDeckScreen extends React.Component {
                         questions: []
                     }
                 })
-            ).then(data => {
-                Alert.alert("new deck created sucessfully")
-                this.setState({ deckName: "" })
-                AsyncStorage.getItem(DECKS_STORAGE_KEY).then(data => {
+            ).then(() => {
+                Alert.alert("new deck created sucessfully");
+                this.setState({ deckName: "" });
+                AsyncStorage.getItem(DECKS_STORAGE_KEY).then((data) => {
                     const decks = JSON.parse(data),
-                    deck = decks[deckName];
+                        deck = decks[deckName];
                     this.props.navigation.navigate("DeckViewScreen", {
                         deck
                     });
                 });
-            })
+            });
         } else {
-            Alert.alert("Deck name is required")
+            Alert.alert("Deck name is required");
         }
     }
     render() {
@@ -54,7 +54,7 @@ export default class NewDeckScreen extends React.Component {
                             placeholder="enter deck title here"
                             value={this.state.deckName}
                             style={styles.input}
-                            onChangeText={(deckName) => this.setState({ deckName })}
+                            onChangeText={deckName => this.setState({ deckName })}
                         />
                         <TouchableOpacity
                             style={styles.button}
@@ -71,13 +71,13 @@ export default class NewDeckScreen extends React.Component {
 
 const styles = {
     button: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
         padding: 10
     },
     input: {
         borderWidth: 1,
-        borderColor: '#555',
+        borderColor: "#555",
         marginVertical: 10,
         height: 40
     }

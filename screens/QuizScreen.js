@@ -1,17 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
     Text,
     View,
     ScrollView,
     TouchableOpacity
-} from 'react-native';
-import {
-    clearLocalNotification,
-    setLocalNotification
-  } from "../utils/Notifications";
+} from "react-native";
 
 
 export default class QuizScreen extends React.Component {
+    static navigationOptions = {
+        title: "Quiz"
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -21,17 +20,16 @@ export default class QuizScreen extends React.Component {
             correctAnswerCount: 0,
             showAnswer: false,
             showResults: false
-        }
-    }
-    static navigationOptions = {
-        title: "Quiz"
+        };
     }
     handleIncrement = (answer) => {
-        let { currentCount, correctAnswerCount, showResults, totalCount } = this.state;
+        let {
+            currentCount, correctAnswerCount, showResults
+        } = this.state;
+        const { totalCount } = this.state;
         currentCount++;
         if (currentCount === totalCount) {
             showResults = true;
-            clearLocalNotification().then(setLocalNotification);
         }
         if (answer) {
             correctAnswerCount++;
@@ -52,7 +50,7 @@ export default class QuizScreen extends React.Component {
         if (this.state.showAnswer) {
             return (
                 <Text> Answer: {this.state.questions[this.state.currentCount].answer}</Text>
-            )
+            );
         }
     }
     getShowAnswerButton = () => {
@@ -64,7 +62,7 @@ export default class QuizScreen extends React.Component {
                 >
                     <Text> Show Answer </Text>
                 </TouchableOpacity>
-            )
+            );
         }
     }
     handleRestartQuiz = () => {
@@ -129,8 +127,8 @@ export default class QuizScreen extends React.Component {
 
 const styles = {
     button: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
         padding: 10,
         marginVertical: 10
     }
