@@ -5,6 +5,10 @@ import {
     ScrollView,
     TouchableOpacity
 } from "react-native";
+import {
+    clearLocalNotification,
+    setLocalNotification
+} from "../utils/Notifications";
 
 
 export default class QuizScreen extends React.Component {
@@ -30,6 +34,7 @@ export default class QuizScreen extends React.Component {
         currentCount++;
         if (currentCount === totalCount) {
             showResults = true;
+            clearLocalNotification().then(setLocalNotification);
         }
         if (answer) {
             correctAnswerCount++;
